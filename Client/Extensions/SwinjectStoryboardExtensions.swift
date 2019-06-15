@@ -14,11 +14,13 @@ extension SwinjectStoryboard {
         container.storyboardInitCompleted(NewsViewController.self) { resolver, controller in
             controller.hackerNewsService = resolver.resolve(HackerNewsService.self)!
             controller.authenticationUIService = resolver.resolve(AuthenticationUIService.self)!
+            controller.thumbnailService = resolver.resolve(ThumbnailService.self)!
             controller.swipeCellKitActions = resolver.resolve(SwipeCellKitActions.self)!
         }
         container.storyboardInitCompleted(CommentsViewController.self) { resolver, controller in
             controller.hackerNewsService = resolver.resolve(HackerNewsService.self)!
             controller.authenticationUIService = resolver.resolve(AuthenticationUIService.self)!
+            controller.thumbnailService = resolver.resolve(ThumbnailService.self)!
             controller.swipeCellKitActions = resolver.resolve(SwipeCellKitActions.self)!
         }
         container.storyboardInitCompleted(SettingsViewController.self) { resolver, controller in
@@ -41,6 +43,8 @@ extension SwinjectStoryboard {
                 authenticationUIService: resolver.resolve(AuthenticationUIService.self)!,
                 hackerNewsService: resolver.resolve(HackerNewsService.self)!)
         }
+        container.register(ThumbnailService.self) { _ in ThumbnailService() }
+            .inObjectScope(.container)
     }
 
     class func getService<T>() -> T? {

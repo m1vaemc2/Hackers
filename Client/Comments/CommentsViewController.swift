@@ -17,6 +17,7 @@ import Loaf
 class CommentsViewController: UITableViewController {
     public var hackerNewsService: HackerNewsService?
     public var authenticationUIService: AuthenticationUIService?
+    public var thumbnailService: ThumbnailService?
     public var swipeCellKitActions: SwipeCellKitActions?
 
     private enum ActivityType {
@@ -105,8 +106,20 @@ extension CommentsViewController {
             cell.delegate = self
             cell.clearImage()
             cell.postTitleView.post = post
-            cell.thumbnailImageView.setImageWithPlaceholder(url: post?.url, resizeToSize: 60)
+            cell.clearImage()
             cell.thumbnailImageView.isUserInteractionEnabled = false
+
+            // TODO this needs refactoring
+            thumbnailService?.thumbnail(for: post!.url!) { result in
+                switch result {
+                case .value(let image):
+                    DispatchQueue.main.async {
+                        cell.thumbnailImageView.image = image
+                    }
+                case .error(let error):
+                    print(error)
+                }
+            }
 
             return cell
         default:

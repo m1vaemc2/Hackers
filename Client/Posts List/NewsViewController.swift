@@ -18,6 +18,7 @@ import SwipeCellKit
 class NewsViewController: UITableViewController {
     public var hackerNewsService: HackerNewsService?
     public var authenticationUIService: AuthenticationUIService?
+    public var thumbnailService: ThumbnailService?
     public var swipeCellKitActions: SwipeCellKitActions?
 
     private var posts: [HNPost]?
@@ -106,14 +107,25 @@ extension NewsViewController {
     override open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // swiftlint:disable force_cast
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
-        cell.postDelegate = self
-        cell.delegate = self
-        cell.clearImage()
+        if let post = posts?[indexPath.row] {
+            cell.postDelegate = self
+            cell.delegate = self
+            cell.clearImage()
 
-        let post = posts?[indexPath.row]
-        cell.postTitleView.post = post
-        cell.postTitleView.delegate = self
-        cell.thumbnailImageView.setImageWithPlaceholder(url: post?.url, resizeToSize: 60)
+            cell.postTitleView.post = post
+            cell.postTitleView.delegate = self
+            // TODO this needs refactoring
+            thumbnailService?.thumbnail(for: post.url!) { result in
+                switch result {
+                case .value(let image):
+                    DispatchQueue.main.async {
+                        cell.thumbnailImageView.image = image
+                    }
+                case .error(let error):
+                    print(error)
+                }
+            }
+        }
 
         return cell
     }

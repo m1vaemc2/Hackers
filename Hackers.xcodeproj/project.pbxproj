@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		240C5BE018D267C70011177A /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 240C5BDF18D267C70011177A /* Icons.xcassets */; };
 		24191F8D1944C991003C0D98 /* CommentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24191F8C1944C991003C0D98 /* CommentsController.swift */; };
+		241E377322B551A5007A3618 /* ThumbnailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241E377222B551A5007A3618 /* ThumbnailService.swift */; };
 		241E8DAA1944AF870004F457 /* HNCommentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241E8DA91944AF870004F457 /* HNCommentExtensions.swift */; };
 		242A90A422635B8C008E7910 /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242A90A322635B8C008E7910 /* UIImageExtensions.swift */; };
 		243271951F95EDA9008196DB /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 243271941F95EDA9008196DB /* StringExtensions.swift */; };
@@ -77,6 +78,7 @@
 		240C5BDF18D267C70011177A /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
 		241387A51945A6E100D71220 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		24191F8C1944C991003C0D98 /* CommentsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsController.swift; sourceTree = "<group>"; };
+		241E377222B551A5007A3618 /* ThumbnailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailService.swift; sourceTree = "<group>"; };
 		241E8DA91944AF870004F457 /* HNCommentExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HNCommentExtensions.swift; sourceTree = "<group>"; };
 		242A90A322635B8C008E7910 /* UIImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
 		243271941F95EDA9008196DB /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
@@ -368,6 +370,7 @@
 				24FF021A226C99FA002EF8DD /* HackerNewsService.swift */,
 				2477BDE4227D9D8200771FE2 /* SessionService.swift */,
 				24B1A6A422B508A40051EAFD /* OnboardingService.swift */,
+				241E377222B551A5007A3618 /* ThumbnailService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -572,6 +575,7 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Hackers/Pods-Hackers-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BulletinBoard/BLTNBoard.framework",
+				"${BUILT_PRODUCTS_DIR}/Cache/Cache.framework",
 				"${BUILT_PRODUCTS_DIR}/HNScraper/HNScraper.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/Loaf/Loaf.framework",
@@ -584,6 +588,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BLTNBoard.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cache.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HNScraper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Loaf.framework",
@@ -646,6 +651,7 @@
 				24CEAA9B1F8916970050DEDF /* UIViewExtensions.swift in Sources */,
 				24D6B8CA1C1EDBFC00618422 /* AppTheme.swift in Sources */,
 				245DCAB01CD4DA2A00152AA3 /* SFSafariViewControllerExtensions.swift in Sources */,
+				241E377322B551A5007A3618 /* ThumbnailService.swift in Sources */,
 				24FF021F226CAAB5002EF8DD /* UITableViewControllerExtensions.swift in Sources */,
 				24B5BFEF1B52CE8900328C62 /* PostTitleView.swift in Sources */,
 				241E8DAA1944AF870004F457 /* HNCommentExtensions.swift in Sources */,
@@ -861,6 +867,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Client/Supporting Files/Hackers2-Prefix.pch";
 				INFOPLIST_FILE = "Client/Supporting Files/Hackers-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.weiranzhang.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Hackers;
@@ -884,6 +891,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Client/Supporting Files/Hackers2-Prefix.pch";
 				INFOPLIST_FILE = "Client/Supporting Files/Hackers-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.weiranzhang.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Hackers;

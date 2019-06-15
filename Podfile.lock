@@ -1,5 +1,6 @@
 PODS:
   - BulletinBoard (3.0.0)
+  - Cache (5.2.0)
   - DeviceKit (2.0.0)
   - HNScraper (0.2.2)
   - Kingfisher (5.6.0)
@@ -14,6 +15,7 @@ PODS:
 
 DEPENDENCIES:
   - BulletinBoard
+  - Cache
   - DeviceKit
   - HNScraper (from `https://github.com/weiran/HNScraper.git`, branch `master`)
   - Kingfisher
@@ -28,6 +30,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - BulletinBoard
+    - Cache
     - DeviceKit
     - Kingfisher
     - Loaf
@@ -50,6 +53,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   BulletinBoard: 927f4f9fd22503ceecd71bfc830fd65d5996593a
+  Cache: 807c5d86d01a177f06ede9865add3aea269bbfd4
   DeviceKit: 72d36709552d4b3582abd76a53949148acad9811
   HNScraper: d96632c361238905f2886f83675e75f2153b4dc4
   Kingfisher: 1a50df6880a60bae26f3e21a0df3d17b892f5e0b
@@ -61,6 +65,6 @@ SPEC CHECKSUMS:
   SwipeCellKit: 935ca28c187ec6e1ffb2b578cf8ddca842bfdcbb
   WhatsNewKit: 4012e2195e96df01ff9bd556d4ca27d48d27f1b1
 
-PODFILE CHECKSUM: ade55dec75a157ac5e9c060bce9d01aa057009af
+PODFILE CHECKSUM: 4e33c7e41a0bd794d246e796d4a20837213b19cb
 
 COCOAPODS: 1.7.2
