@@ -35,29 +35,29 @@ class ThumbnailService {
             case .value(let image):
                 completion(.value(image))
             case .error:
-                self.fetchThumbnail(for: url, completion: completion)
+                DispatchQueue.main.async {
+                    self.fetchThumbnail(for: url, completion: completion)
+                }
             }
         }
     }
 
     private func fetchThumbnail(for url: URL, completion: @escaping (Result<UIImage>) -> Void) {
-        DispatchQueue.main.async {
-            let metadataProvider = LPMetadataProvider()
-            metadataProvider.startFetchingMetadata(for: url) { (metadata, error) in
-                if error == nil, let metadata = metadata, let imageProvider = metadata.iconProvider {
-                    imageProvider.loadItem(forTypeIdentifier: "public.png", options: nil) { (item, error) in
-                        // swiftlint:disable force_cast
-                        if error == nil, let item = item, let image = UIImage(data: item as! Data) {
-                            let smallImage = self.resize(image: image, size: CGSize(width: 180, height: 180))
-                            try? self.storage?.setObject(smallImage, forKey: url.absoluteString)
-                            completion(.value(image))
-                        } else {
-                            completion(.error(error ?? StorageError.notFound))
-                        }
+        let metadataProvider = LPMetadataProvider()
+        metadataProvider.startFetchingMetadata(for: url) { (metadata, error) in
+            if error == nil, let metadata = metadata, let imageProvider = metadata.iconProvider {
+                imageProvider.loadItem(forTypeIdentifier: "public.png", options: nil) { (item, error) in
+                    // swiftlint:disable force_cast
+                    if error == nil, let item = item, let image = UIImage(data: item as! Data) {
+                        let smallImage = self.resize(image: image, size: CGSize(width: 180, height: 180))
+                        try? self.storage?.setObject(smallImage, forKey: url.absoluteString)
+                        completion(.value(image))
+                    } else {
+                        completion(.error(error ?? StorageError.notFound))
                     }
-                } else {
-                    completion(.error(error ?? StorageError.notFound))
                 }
+            } else {
+                completion(.error(error ?? StorageError.notFound))
             }
         }
     }

@@ -116,7 +116,7 @@ extension NewsViewController {
         if let post = posts?[indexPath.row] {
             cell.postDelegate = self
             cell.delegate = self
-            cell.clearImage()
+            cell.setImageWithPlaceholder(url: nil)
 
             cell.postTitleView.post = post
             cell.postTitleView.delegate = self
@@ -126,6 +126,7 @@ extension NewsViewController {
                 case .value(let image):
                     DispatchQueue.main.async {
                         cell.thumbnailImageView.image = image
+                        cell.thumbnailImageView.contentMode = .scaleAspectFill
                     }
                 case .error(let error):
                     print(error)
