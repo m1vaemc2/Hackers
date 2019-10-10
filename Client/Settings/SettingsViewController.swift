@@ -63,7 +63,13 @@ extension SettingsViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch (indexPath.section, indexPath.row) {
         case (0, 0):
+            // login
             authenticationUIService?.showAuthentication()
+        case (3, 0):
+            // what's new
+            if let viewController = OnboardingService.onboardingViewController(forceShow: true) {
+                present(viewController, animated: true)
+            }
         default: break
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -74,8 +80,6 @@ extension SettingsViewController {
 
 extension SettingsViewController: Themed {
     func applyTheme(_ theme: AppTheme) {
-        view.backgroundColor = theme.barBackgroundColor
-        tableView.backgroundColor = theme.barBackgroundColor
-        tableView.separatorColor = theme.separatorColor
+        view.backgroundColor = theme.groupedTableViewBackgroundColor
     }
 }

@@ -16,12 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if ProcessInfo.processInfo.arguments.contains("disableReviewPrompts") {
             ReviewController.disablePrompts = true
         }
+        if ProcessInfo.processInfo.arguments.contains("skipAnimations") {
+            UIView.setAnimationsEnabled(false)
+        }
         ReviewController.incrementLaunchCounter()
         ReviewController.requestReview()
-        setAppTheme()
-    }
-
-    private func setAppTheme() {
-        AppThemeProvider.shared.currentTheme = UserDefaults.standard.darkModeEnabled ? .dark : .light
+        ThemeSwitcher.switchTheme()
     }
 }

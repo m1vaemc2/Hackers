@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 import SafariServices
 import PromiseKit
 import Kingfisher
@@ -63,17 +64,31 @@ class NewsViewController: UITableViewController {
     private func navigateToComments(for post: HNPost) {
         performSegue(withIdentifier: "ShowCommentsSegue", sender: self)
     }
+
+    @IBAction func showNewSettings(_ sender: Any) {
+        let settingsStore = SettingsStore()
+        let hostingVC = UIHostingController(
+            rootView: SettingsView()
+                .environmentObject(settingsStore))
+        present(hostingVC, animated: true)
+    }
 }
 
 extension NewsViewController { // post fetching
     @objc private func loadPosts() {
         hackerNewsService?.getPosts(of: postType).map { (posts, nextPageIdentifier) in
-            if posts.count == 0 {
+            if posts.isEmpty {
                 self.tableView.backgroundView = TableViewBackgroundView.emptyBackgroundView(message: "No posts")
             } else {
-                self.posts = posts
-                self.nextPageIdentifier = nextPageIdentifier
-                self.tableView.reloadData()
+                DispatchQueue.main.async {
+                    self.posts = posts
+                    self.nextPageIdentifier = nextPageIdentifier
+                    self.tableView.reloadData()
+                    // fixes cell height being incorrect on initial load
+                    self.tableView.setNeedsLayout()
+                    self.tableView.layoutIfNeeded()
+                    self.tableView.reloadData()
+                }
             }
         }.ensure {
             self.tableView.refreshControl?.endRefreshing()
@@ -108,12 +123,11 @@ extension NewsViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
         cell.postDelegate = self
         cell.delegate = self
-        cell.clearImage()
 
         let post = posts?[indexPath.row]
         cell.postTitleView.post = post
         cell.postTitleView.delegate = self
-        cell.thumbnailImageView.setImageWithPlaceholder(url: post?.url, resizeToSize: 60)
+        cell.setImageWithPlaceholder(url: post?.url)
 
         return cell
     }
@@ -152,10 +166,11 @@ extension NewsViewController: SwipeTableViewCellDelegate {
                    editActionsOptionsForRowAt indexPath: IndexPath,
                    for orientation: SwipeActionsOrientation) -> SwipeOptions {
         let expansionStyle = SwipeExpansionStyle(target: .percentage(0.2),
-                                                 elasticOverscroll: true,
+                                                 elasticOverscroll: false,
                                                  completionAnimation: .bounce)
         var options = SwipeOptions()
         options.expansionStyle = expansionStyle
+        options.expansionDelegate = BounceExpansion()
         options.transitionStyle = .drag
         return options
     }
@@ -179,10 +194,10 @@ extension NewsViewController: UIViewControllerPreviewingDelegate, SFSafariViewCo
                 return nil
         }
         let post = posts[indexPath.row]
-        if let url = post.url, verifyLink(post.url) {
+        if let url = post.url, UIApplication.shared.canOpenURL(url) {
             peekedIndexPath = indexPath
             previewingContext.sourceRect = tableView.rectForRow(at: indexPath)
-            return getSafariViewController(url)
+            return SFSafariViewController.instance(for: url, previewActionItemsDelegate: self)
         }
         return nil
     }
@@ -207,23 +222,14 @@ extension NewsViewController: UIViewControllerPreviewingDelegate, SFSafariViewCo
         }
         return [viewCommentsPreviewAction]
     }
-
-    private func getSafariViewController(_ url: URL) -> SFSafariViewController {
-        let safariViewController = SFSafariViewController.instance(for: url, previewActionItemsDelegate: self)
-        safariViewController.previewActionItemsDelegate = self
-        return safariViewController
-    }
 }
 
 extension NewsViewController: PostTitleViewDelegate, PostCellDelegate {
     func didPressLinkButton(_ post: HNPost) {
-        guard verifyLink(post.url), let url = post.url else { return }
-        navigationController?.present(getSafariViewController(url), animated: true, completion: nil)
-    }
-
-    private func verifyLink(_ url: URL?) -> Bool {
-        guard let url = url else { return false }
-        return UIApplication.shared.canOpenURL(url)
+        if let url = post.url,
+            let safariViewController = SFSafariViewController.instance(for: url, previewActionItemsDelegate: self) {
+            navigationController?.present(safariViewController, animated: true)
+        }
     }
 
     func didTapThumbnail(_ sender: Any) {
